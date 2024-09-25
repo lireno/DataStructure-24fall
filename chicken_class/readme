@@ -1,11 +1,3 @@
-*this readme file is written with Chatgpt-4o*
-## Main Function for Testing
-
-The main function is designed to test various functionalities of the Chicken class, including:
-- Using the copy constructor.
-- Using the assignment operator in a chained assignment (c2 = c3 = c;).
-- Modifying c's name and printing the results to demonstrate that changes to one object do not affect other copies (proving deep copy functionality).
-
 ## Compilation
 You can compile and run the project using the provided `Makefile`. The following commands are available:
 

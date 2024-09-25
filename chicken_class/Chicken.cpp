@@ -33,6 +33,8 @@ class Chicken {
         age = _age;
     }
     void setName(const char* _name) {
+        if (name != nullptr)
+            delete[] name;
         int len = strlen(_name) + 1;
         name = new char[len];
         for (int i = 0; i < len; i++)
@@ -48,15 +50,13 @@ class Chicken {
     }
 
     Chicken& operator=(const Chicken& other) {
-        if (this == &other) {
+        if (this == &other)
             return *this;
-        }
 
         age = other.age;
 
-        if (name != nullptr) {
+        if (name != nullptr)
             delete[] name;
-        }
 
         if (other.name != nullptr) {
             int len = strlen(other.name) + 1;
@@ -69,29 +69,30 @@ class Chicken {
 
         return *this;
     }
-
-    void printInfo() const {
-        std::cout << "Hi, everyone! My name is " << (name ? name : "Unnamed") << ", I am " << age << " years old." << std::endl;
-    }
 };
 
 int main() {
-
+    auto print = [](const Chicken& c) {
+        std::cout << "Hi, everyone! My name is " << c.getName()
+                  << ", I am " << c.getAge() << " years old." << std::endl;
+    };
     Chicken c(24, "Kunkun");
-    c.printInfo();
+    print(c);
 
-    Chicken c1 = c;
-    c.printInfo();
+    Chicken d;
+    d = c;
+    print(d); // 测试【赋值运算符】是否正确，能正确输出给 20 分
+    Chicken a = c;
+    print(a); // 测试【赋值构造函数】是否正确，能正确输出给 20 分
 
-    Chicken c2, c3;
-    c2 = c3 = c;
-    c2.printInfo();
-    c3.printInfo();
+    c.setName("Xukun Cai");
+    print(c);
+    print(a);
+    print(d); // 测试是否为【深度复制】，本行与上两行能正确输出给 20 分
 
-    std::cout << "----------------------------------------------------" << std::endl;
-    std::cout << "setting c's name to 'KFC' and print info of c and c2" << std::endl;
-    c.setName("KFC");
-    c.printInfo();
-    c2.printInfo();
+    Chicken b;
+    b = d = c;
+    print(b);
+    print(d); // 测试【连续赋值】功能，本行与上一行能正确输出给 20 分
     return 0;
 }
