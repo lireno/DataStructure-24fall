@@ -33,6 +33,9 @@ class Chicken {
         age = _age;
     }
     void setName(const char* _name) {
+        if (name == _name)
+            return; // to prevent self-assignment
+
         if (name != nullptr)
             delete[] name;
         int len = strlen(_name) + 1;
@@ -77,6 +80,7 @@ int main() {
                   << ", I am " << c.getAge() << " years old." << std::endl;
     };
     Chicken c(24, "Kunkun");
+    c.setName(c.getName());
     print(c);
 
     Chicken d;

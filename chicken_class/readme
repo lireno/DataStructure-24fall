@@ -1,3 +1,21 @@
+## Self-Assignment Issue
+In line 36-38, the added condition `if (name == _name)` checks whether the `_name` is the same as the current name. If it is, the function returns immediately without deleting memory.
+  ```c++
+    void setName(const char* _name) {
+        if (name == _name)
+            return; // to prevent self-assignment
+
+        if (name != nullptr)
+            delete[] name;
+            
+        int len = strlen(_name) + 1;
+        name = new char[len];
+        for (int i = 0; i < len; i++)
+            name[i] = _name[i];
+    }
+  ```
+
+
 ## Compilation
 You can compile and run the project using the provided `Makefile`. The following commands are available:
 
