@@ -8,3 +8,5 @@
 `void insert(T _val)`的参数中假如了关键字 **const**来方便接受临时变量。
 
 *同时在insert的参数中也加上了 &* 
+
+最终是 `void setCurrentVal(const T& _val)` 和 `void insert(const &T _val)`
