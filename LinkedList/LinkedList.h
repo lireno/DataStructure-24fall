@@ -43,6 +43,7 @@ class SingleLinkedList {
     bool find(const T& _val) const;
     /// 删除 currentPos 后面的元素
     void remove();
+    void removeCurrentNode();
 };
 
 template <typename T>
@@ -103,6 +104,28 @@ void SingleLinkedList<T>::remove() {
     delete p;
     --size;
 };
+
+template <typename T>
+void SingleLinkedList<T>::removeCurrentNode() {
+    if (currentPos == nullptr) {
+        return;
+    }
+
+    if (currentPos == head) {
+        head = head->next;
+        currentPos = currentPos->next;
+    } else {
+        Node* p = head;
+        while (p->next != currentPos) {
+            p = p->next;
+        }
+
+        p->next = currentPos->next;
+        delete currentPos;
+        currentPos = p;
+    }
+    --size;
+}
 
 template <typename T>
 int SingleLinkedList<T>::getSize() const {

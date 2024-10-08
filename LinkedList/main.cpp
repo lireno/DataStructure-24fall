@@ -27,8 +27,14 @@ int main() {
 
     // 测试删除
     list.remove();
-    std::cout << "After removing current position element: ";
+    std::cout << "After removing current's next position element: ";
     list.printList();
+
+    list.removeCurrentNode();
+    std::cout << "After removing current position element.";
+    list.printList();
+
+    std::cout << "print the size of list: " << list.getSize() << std::endl;
 
     // 测试清空链表
     list.emptyList();
