@@ -96,7 +96,11 @@ void SingleLinkedList<T>::insert(const T& _val) {
 
 template <typename T>
 void SingleLinkedList<T>::remove() {
-    if (currentPos == nullptr || currentPos->next == nullptr) {
+    if (size == 1) {
+        emptyList();
+        return;
+    }
+    if (head == nullptr) {
         return;
     }
     Node* p = currentPos->next;
@@ -187,7 +191,7 @@ void SingleLinkedList<T>::emptyList() {
 
 template <typename T>
 SingleLinkedList<T>& SingleLinkedList<T>::operator=(const SingleLinkedList<T>& _l) {
-    if (this == _l)
+    if (this == &_l)
         return *this;
     emptyList();
     _copy(_l);
