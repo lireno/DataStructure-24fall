@@ -1,0 +1,133 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\usepackage[affil-it]{authblk}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{梁育玮, 3230102923}
+\chead{数据结构与算法第四次作业}
+\rhead{Oct.16th, 2024}
+\title{数据结构与算法第四次作业}
+
+\author{梁育玮 3230102923
+  \thanks{Electronic address: \texttt{liangyuwei631@gmail.com}}}
+\affil{(Mathematics and Applied Mathematics 2302), Zhejiang University }
+
+
+\date{\today}
+
+\maketitle
+\begin{abstract}
+    本实验的目的是实现链表数据结构，并测试其功能，包括插入、删除、遍历、拷贝构造和移动构造。测试程序验证了链表的初始化、头尾元素的访问、插入和删除操作、迭代器的正确性、拷贝与赋值操作以及内存管理的正确性。所有测试均通过，未发现内存泄漏。
+\end{abstract}
+
+\section{测试程序的设计思路}
+
+为了测试链表的功能，我设计了一个测试程序，涵盖了链表的核心功能。测试思路如下：
+
+
+\begin{enumerate}
+    \item \textbf{链表初始化}：创建一个空的链表对象，并验证其初始状态。
+    
+    \item \text{头尾元素}：测试 \texttt{front} 和 \texttt{back} 函数，分别返回链表头部和尾部的元素。
+    
+    \item \textbf{插入操作}：
+    \begin{itemize}
+        \item 通过 \texttt{push\_front} 和 \texttt{push\_back} 插入元素，分别向链表头部和尾部插入数据。
+        \item 验证插入后链表的大小是否更新正确，以及数据的顺序是否符合预期。
+    \end{itemize}
+
+    \item \textbf{遍历链表}：
+    \begin{itemize}
+        \item 使用迭代器遍历链表，输出所有节点数据，测试前置和后置的自增（\texttt{++}）和自减（\texttt{--}）运算符，确保迭代器可以正确工作。
+    \end{itemize}
+
+    \item \textbf{删除操作}：
+    \begin{itemize}
+        \item 测试 \texttt{pop\_front} 和 \texttt{pop\_back} 删除链表头部和尾部的数据，确保删除后链表的大小和数据符合预期。
+    \end{itemize}
+
+    \item \textbf{拷贝与赋值}：
+    \begin{itemize}
+        \item 测试拷贝构造函数和赋值运算符，将一个链表的数据拷贝到另一个链表。
+        \item 使用移动构造函数将链表的数据从一个对象移动到另一个对象，并检查移动后的源链表是否为空。
+    \end{itemize}
+
+    \item \textbf{内存检测}：
+    \begin{itemize}
+        \item 通过 \texttt{valgrind} 工具对测试程序进行内存泄漏检测，确保程序的内存管理是正确的，所有动态分配的内存都被正确释放。
+    \end{itemize}
+\end{enumerate}
+
+\section{测试的结果}
+
+测试结果一切正常。\\
+下面是输出的结果
+\begin{lstlisting}[language={}, caption={List.cpp的输出结果}]
+    List initialized. Size: 0
+    After push_back 10, 20, 30:
+    10 20 30
+    After push_front 5:
+    5 10 20 30
+    Testing dynamic iterator ++ and --:
+    5 10 20 30
+    Using post-increment (it++): 5 10 20 30
+    Using pre-decrement (--it):
+    30 20 10 5
+    Using post-decrement (it--):
+    30 20 10 5
+    ---
+    Front element: 5
+    Back element: 30
+    After pop_front: 10 20 30
+    After pop_back: 10 20
+    After push_back 40, 50: 10 20 40 50
+    After erasing second element: 10 40 50
+    After copying myList to copyList: 10 40 50
+    After assigning myList to assignedList: 10 40 50
+    After moving assignedList to movedList: 10 40 50
+    After moving, is assignedList empty? Yes
+    After push_back 60 and push_front 1: 1 10 40 50 60
+    After clear. Is myList empty? Yes
+\end{lstlisting}
+
+我用 valgrind 进行测试，发现没有发生内存泄露。
+
+\section{bug报告}
+
+\subsection*{访问空链表的 ``front()'' 和 ``back()'' 函数}
+当链表为空时，调用 \texttt{front} 和 \texttt{back} 函数会返回默认值。
+
+\subsection*{在空链表上进行 ''erase()'' 操作}
+erase() 函数没有检验删除节点的合理性，可能导致头节点或者尾节点被删除的情况。\\
+例如当链表为空时，``myList.erase(myList.begin())`` 会抛出异常。
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
