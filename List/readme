@@ -1,4 +1,5 @@
-List.cpp中的 `testbug()` 函数调试了两个bug
+List.cpp中的 `testbug()` 函数调试了两个bug+
+
 ```cpp
     // testbug();  // 请将本行注释去掉，以测试bug
 ```
