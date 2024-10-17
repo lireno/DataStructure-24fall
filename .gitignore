@@ -1,0 +1,32 @@
+# Ignore LaTeX intermediate and output files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.pdf
+*.run.xml
+*-blx.bib
+*.synctex.gz
+
+# Ignore other backup or temporary files (optional)
+*.bak
+*~
+
+.vscode/
+/template/
+
+# 忽略常见的编译输出文件
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.out
+*.a
+*.lib
+*.dylib
+
+
+# 忽略当前目录下所有没有扩展名的文件
