@@ -1,5 +1,11 @@
-List.cpp中的 `testbug()` 函数调试了两个bug+
+## How to run
+- `make`: Compile the code.
+- `make report`: Run the LaTeX code to generate the report.
+- `make clean`: Clean the executable file.
+
+## Bugs I have found
+There are two bugs in the `testbug()` function in `List.cpp`.
 
 ```cpp
-    // testbug();  // 请将本行注释去掉，以测试bug
+    // testbug();  // Uncomment this line 123 to test the bug
 ```
