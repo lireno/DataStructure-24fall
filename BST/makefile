@@ -1,6 +1,6 @@
 run:
-	g++ -g -o test_BST test_BST.cpp
-	./test_BST
+	g++ -g -o main main.cpp
+	./main
 
 report:
 	xelatex report.tex
@@ -12,5 +12,5 @@ report:
 all: reprot run
 
 clean:
-	rm -f test_BST
+	rm -f main
 	rm -f *.aux *.log *.out *.pdf *.toc *.bbl *.blg *.blx.bib *.run.xml *.synctex.gz *.bib

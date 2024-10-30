@@ -2,6 +2,7 @@
 \usepackage{geometry, CJKutf8}
 \usepackage[affil-it]{authblk}
 \usepackage[backend=bibtex,style=numeric]{biblatex}
+\usepackage{hyperref}
 \geometry{margin=1.5cm, vmargin={0pt,1cm}}
 \setlength{\topmargin}{-1cm}
 \setlength{\paperheight}{29.7cm}
@@ -42,6 +43,7 @@
 
 \maketitle
 \begin{abstract}
+    本文档介绍了二叉搜索树中 \texttt{remove} 函数的实现和测试。首先，详细描述了 \texttt{detachMin} 和 \texttt{remove} 函数的实现思路，包括输入输出和具体步骤。接着，通过一系列测试验证了 \texttt{remove} 函数的正确性，展示了不同情况下节点删除后的树结构。
 \end{abstract}
 
 \section{\texttt{remove} 函数的实现}
@@ -90,17 +92,49 @@
 \begin{verbatim}
 Initial Tree:
 3 5 7 10 12 15 18
-Tree after removing 7:
-3 5 10 12 15 18
-Tree after removing 12:
-3 5 10 15 18
-Tree after removing 15:
-3 5 10 18
 Tree after removing 10:
-3 5 18
+3 5 7 12 15 18
+Tree after removing 3:
+5 7 12 15 18
+Tree after removing 12:
+5 7 15 18
+Tree after removing 5:
+7 15 18
+Tree after removing 2:
+7 15 18
 \end{verbatim}
 
 从测试结果可以看出，\texttt{remove} 函数能够正确地移除指定的节点，并保持二叉搜索树的性质。每次移除节点后，树结构都符合预期。
+
+在测试过程中，删除 10 用于验证删除有两个子节点的情况，同时 10 也是根节点。删除 3 用于验证删除没有子节点的情况。删除 12 用于验证删除有两个子节点的情况，且右子树的最小节点是右子树的根节点。删除 5 用于验证删除只有一个子节点的情况，见图\ref{fig:remove}。
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[height=5cm]{./img/1.png}
+        \caption*{(a)删除 10 用于验证删除有两个子节点的情况}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[height=5cm]{./img/2.png}
+        \caption*{(b)删除 3 用于验证删除没有子节点的情况}
+    \end{minipage}
+    \vfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[height=5cm]{./img/3.png}
+        \caption*{(c)删除 12 用于验证删除有两个子节点的情况，且右子树的最小节点是右子树的根节点}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[height=5cm]{./img/4.png}
+        \caption*{(d)删除 5 用于验证删除只有一个子节点的情况。}
+    \end{minipage}
+    \caption{树的删除操作展示}
+    \label{fig:remove}
+\end{figure}
 
 valgrind 调试后没发现内存泄漏。
 
@@ -108,8 +142,8 @@ valgrind 调试后没发现内存泄漏。
 
 \bibitem{DS_1029_course}
 Zhejiang University, 
-\textit{数据结构和算法 2024-10-29第6-8节}, 
-王何宇, 紫金港西1-215, 
+\href{https://www.example.com}{\textit{数据结构和算法 2024-10-29第6-8节}, 
+王何宇, 紫金港西1-215}, 
 \url{https://classroom.zju.edu.cn/livingroom?course_id=64093&sub_id=1405399&tenant_code=112&ts=5010}.
 
 \end{thebibliography}

@@ -1,0 +1,9 @@
+digraph BinaryTree {
+    node [shape=circle, fontname=Helvetica];
+
+    5 [fontcolor=red]; // 着重表示节点10，并改变字体颜色
+    15 -> 18;
+    15 -> 5;
+    5 -> 7;
+
+}

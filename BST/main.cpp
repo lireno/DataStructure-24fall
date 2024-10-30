@@ -16,20 +16,24 @@ void testBinarySearchTree() {
     bst.printTree();
 
     // 测试删除功能
-    bst.remove(7);
-    std::cout << "Tree after removing 7:" << std::endl;
+    bst.remove(10);
+    std::cout << "Tree after removing 10:" << std::endl;
+    bst.printTree();
+
+    bst.remove(3);
+    std::cout << "Tree after removing 3:" << std::endl;
     bst.printTree();
 
     bst.remove(12);
     std::cout << "Tree after removing 12:" << std::endl;
     bst.printTree();
 
-    bst.remove(15);
-    std::cout << "Tree after removing 15:" << std::endl;
+    bst.remove(5);
+    std::cout << "Tree after removing 5:" << std::endl;
     bst.printTree();
 
-    bst.remove(10);
-    std::cout << "Tree after removing 10:" << std::endl;
+    bst.remove(2);
+    std::cout << "Tree after removing 2:" << std::endl;
     bst.printTree();
 }
 
