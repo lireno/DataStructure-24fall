@@ -1,0 +1,123 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\usepackage[affil-it]{authblk}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{梁育玮, 3230102923}
+\chead{数据结构与算法第五次作业}
+\rhead{\today}
+\title{数据结构与算法第五次作业}
+
+\author{梁育玮 3230102923
+  \thanks{Electronic address: \texttt{liangyuwei631@gmail.com}}}
+\affil{(Mathematics and Applied Mathematics 2302), Zhejiang University }
+
+
+\date{\today}
+
+\maketitle
+\begin{abstract}
+\end{abstract}
+
+\section{\texttt{remove} 函数的实现}
+
+以下是 \texttt{remove} 函数的实现思路。
+\begin{itemize}
+    \item \textbf{detachMin} 函数：
+    \begin{itemize}
+        \item 输入：当前节点指针 t，parent 节点指针 parent1
+        \item 输出：最小节点指针
+        \item 步骤：
+        \begin{enumerate}
+            \item 如果 t 为空，返回空指针
+            \item 循环找到最小节点，更新 parent 节点指针
+            \item 根据 parent 节点指针调整树结构
+            \item 返回最小节点指针
+        \end{enumerate}
+    \end{itemize}
+    \item \textbf{remove} 函数：
+    \begin{itemize}
+        \item 输入：要移除的元素 x，当前节点指针 t
+        \item 步骤：
+        \begin{enumerate}
+            \item 循环查找要移除的节点，更新 parent 节点指针
+            \item 如果未找到节点，返回
+            \item 如果节点有一个或无子节点，使 parent 节点指向 t 的子节点 
+            \item 如果节点有两个子节点，分离右子树的最小节点，并使 parent 节点指向最小节点
+        \end{enumerate}
+    \end{itemize}
+\end{itemize}
+
+因为我在实现的时候，将要求中的 “避免出现递归删除” 看成了 “避免出现递归”，所以我在实现的时候，没有使用递归，而只有循环，代价是代码的复杂度增加了，而且多了对 parent 节点的操作。但是能避免递归还是一件好事，编译器的编译速度或许能加快。
+
+值得一提的是，代码思路来源于王何宇老师上课时画的一张很抽象的图 (见图\ref{fig:inspiration})\cite{DS_1029_course}。
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{./img/inspiration.png}
+    \caption{代码思路来源（左边的树）。实现 7 指向 三角形， P 指向 6.5，6.5 指向 3 和 7 。}
+    \label{fig:inspiration}
+\end{figure}
+
+\section{测试}
+
+为了验证 \texttt{remove} 函数的正确性，我们编写了一个简单的测试程序。测试程序首先构建一个二叉搜索树，然后依次移除几个节点，并输出每次移除后的树结构。以下是测试程序的编译和运行结果：
+
+\begin{verbatim}
+Initial Tree:
+3 5 7 10 12 15 18
+Tree after removing 7:
+3 5 10 12 15 18
+Tree after removing 12:
+3 5 10 15 18
+Tree after removing 15:
+3 5 10 18
+Tree after removing 10:
+3 5 18
+\end{verbatim}
+
+从测试结果可以看出，\texttt{remove} 函数能够正确地移除指定的节点，并保持二叉搜索树的性质。每次移除节点后，树结构都符合预期。
+
+valgrind 调试后没发现内存泄漏。
+
+\begin{thebibliography}{9}
+
+\bibitem{DS_1029_course}
+Zhejiang University, 
+\textit{数据结构和算法 2024-10-29第6-8节}, 
+王何宇, 紫金港西1-215, 
+\url{https://classroom.zju.edu.cn/livingroom?course_id=64093&sub_id=1405399&tenant_code=112&ts=5010}.
+
+\end{thebibliography}
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
