@@ -1,0 +1,33 @@
+## Files
+
+- **main.cpp**: The main source code file for Expression Evaluator.
+- **test.cpp**: A test suite to verify the behavior and correctness of the Evaluator.
+- **report.tex**: A LaTeX file containing the project report.
+
+
+## Compilation and Execution
+
+To compile and run the expression evaluator:
+```bash
+make
+```
+
+And once compiled, you can run the evaluator with:
+```bash
+./main
+```
+
+To compile and run the test suite:
+```bash
+make test
+```
+
+To compile the report:
+```bash
+make report
+```
+
+To clean up the directory from generated files:
+```bash
+make clean
+```

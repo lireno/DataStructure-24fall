@@ -1,0 +1,109 @@
+\documentclass[a4paper]{article}
+\usepackage[affil-it]{authblk}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\title{Expression Evaluator Design Report}
+\author{Liang Yuwei 3230102923\thanks{Electronic address: \texttt{liangyuwei631@gmail.com}}}
+\affil{(Mathematics and Applied Mathematics 2302), Zhejiang University }
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Expression Evaluator is a C++ program designed to parse, validate, and compute arithmetic expressions containing various operators, parentheses, and scientific notation. This project explores the algorithmic implementation of expression parsing and evaluates different test cases to ensure the accuracy and robustness of the program.
+\end{abstract}
+
+\section*{A. Expression Evaluator Design}
+
+\subsection*{1. Overview}
+The Expression Evaluator is implemented as a C++ class named \texttt{ExpressionEvaluator}, which interprets arithmetic expressions and calculates their results. The class supports basic arithmetic operators (\texttt{+}, \texttt{-}, \texttt{*}, \texttt{/}), parentheses for grouping, and scientific notation. Additionally, the class ensures syntax validation, including balanced brackets, correct operator placement, and avoidance of illegal operations like division by zero.
+
+\subsection*{2. Key Features}
+\begin{itemize}
+    \item \textbf{Stacks for Values and Operators}: The evaluator uses two stacks: one for numeric values (\texttt{values}) and one for operators (\texttt{ops}). This structure allows handling of operator precedence and nested expressions.
+    \item \textbf{Operator and Precedence Handling}: Operators are handled based on precedence, with \texttt{*} and \texttt{/} having higher precedence than \texttt{+} and \texttt{-}. Operators are evaluated as they appear unless the expression context requires deferring evaluation due to parentheses.
+    \item \textbf{Parentheses and Bracket Matching}: The evaluator supports multiple types of brackets (\texttt{()}, \texttt{\{\}}, \texttt{[]}). It verifies balanced and matching brackets and processes inner expressions before outer ones.
+    \item \textbf{Number Validation}: To handle numbers and scientific notation, a regular expression pattern is used to verify if a string is a valid number format. The conversion from character to number mainly relies on the C++ standard library function \texttt{std::stod}. Additionally, the \texttt{stod} function can handle very small numbers, so when dealing with division by zero, the condition does not need to be set to $< 1e-6$.
+    \item \textbf{Negative Numbers}: The evaluator supports negative numbers through a boolean variable \texttt{minus\_flag}. When encountering a \texttt{-} that does not meet the operator requirements, the next character is checked to see if it is a digit. If it is, \texttt{minus\_flag} is set to \texttt{true}, indicating that the evaluator is in a negative number state.
+    \item \textbf{Error Handling}: The evaluator checks for errors such as division by zero, invalid or misplaced operators, unmatched parentheses, and malformed numbers. Expressions failing any validation criteria are flagged as \texttt{ILLEGAL}.
+\end{itemize}
+
+\subsection*{3. Methodology}
+\begin{itemize}
+    \item \textbf{Expression Parsing}: The \texttt{\_evaluate} method parses the input expression character by character, categorizing each token as an operator, number, or parenthesis. Special cases, such as a standalone \texttt{-} for negative numbers, are handled explicitly.
+    \item \textbf{Computation Logic}: The \texttt{compute} method executes the operation at the top of the \texttt{ops} stack on the two most recent values from the \texttt{values} stack. The result is pushed back to the \texttt{values} stack for further calculations or final output.
+\end{itemize}
+
+\section*{B. Test Cases}
+The following test cases assess the evaluator's ability to handle various expressions, ensuring accurate results and appropriate error handling for invalid inputs.
+\[
+\begin{array}{|l|l|p{7cm}|}
+\hline
+\textbf{Expression} & \textbf{Expected Output} & \textbf{Description} \\
+\hline
+1 + 2 * 3 & 7 & Simple arithmetic with mixed operators \\
+\hline
+3 + (2 - 5) * 4 / 2 & -3 & Mixed operators and parentheses \\
+\hline
+-1 + 2e2 * 3 & 599 & Scientific notation \\
+\hline
+23/e-100 & 2.3e101 & Division with small number \\
+\hline
+-3 * (-2 + (4 - 6) * 2) & 18 & Negative numbers with parentheses \\
+\hline
+(1.5e3 - 1e2) / (2.5 * 10) & 56 & Scientific notation with parentheses \\
+\hline
+-4 + 3 * (2 - 3e1) + 5 / 2 & -85.5 & Mixed negative numbers and operations \\
+\hline
+[3 + \{2 * (4 - 2)\}] * 2\ & 14 & Different types of brackets \\
+\hline
+-1 + -2 * 3 - (-4) & -3 & Continuous negative numbers \\
+\hline
+5.5e2 / 1.1e1 - 3 & 47 & Division with scientific notation \\
+\hline
+2 * 3 - (4 / 2 + 1) * 5 & -9 & Nested operations \\
+\hline
+1.2e2 + 3.5 - (4e1 / 2.0) & 103.5 & Decimal and scientific notation \\
+\hline
+\end{array}
+\]
+
+\[
+\begin{array}{|l|l|p{7cm}|}
+    \hline
+\textbf{Expression} & \textbf{Expected Output} & \textbf{Description} \\
+\hline
+3 + (4 * 2 & ILLEGAL & Missing closing parenthesis \\
+\hline
+5 / (3 - 3) & ILLEGAL & Division by zero \\
+\hline
+2e & ILLEGAL & Incomplete scientific notation \\
+\hline
+1 + * 3 & ILLEGAL & Misplaced operator \\
+\hline
+\{2 + 3)] & ILLEGAL & Mismatched brackets \\
+\hline
+4e2.5 & ILLEGAL & Invalid scientific notation \\
+\hline
+++5 & ILLEGAL & Invalid double operator \\
+\hline
+3.5.2 + 2 & ILLEGAL & Invalid number format \\
+\hline
+(2 + 3)) & ILLEGAL & Extra closing parenthesis \\
+\hline
+2 * (3 - 5)) + 4 & ILLEGAL & Unbalanced parentheses \\
+\hline
+
+\end{array}
+\]
+
+We can see that the evaluator successfully computes the expected results in \texttt{test.cpp}.
+
+\end{document}
+
