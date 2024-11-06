@@ -1,9 +1,17 @@
+## Introduction
+The Expression Evaluator is a simple program that evaluates arithmetic expressions. The program reads an expression from the user, parses it, and evaluates it. Results are rounded to six significant digits and support calculations up to 1e300.
+
+### Supported Operations
+- Addition, Subtraction, Multiplication, Division
+- Parentheses, including (), {}, and []
+- Negative numbers, e.g., -5 * 5, 3+-2, etc. **(Note: No space between the minus sign `-` and the following number)**.  *--5 + 4* or *1 + +2* are not supported.   
+- Scientific notation, e.g., 1.2e-3, 3.4e5, etc.
+
 ## Files
 
-- **main.cpp**: The main source code file for Expression Evaluator.
+- **main.cpp**: The main source code file for the Expression Evaluator.
 - **test.cpp**: A test suite to verify the behavior and correctness of the Evaluator.
 - **report.tex**: A LaTeX file containing the project report.
-
 
 ## Compilation and Execution
 
@@ -12,7 +20,7 @@ To compile and run the expression evaluator:
 make
 ```
 
-And once compiled, you can run the evaluator with:
+Once compiled, you can run the evaluator with:
 ```bash
 ./main
 ```

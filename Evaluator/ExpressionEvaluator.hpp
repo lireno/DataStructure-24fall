@@ -64,7 +64,7 @@ class ExpressionEvaluator {
     }
 
     bool partOfNumber(char c) {
-        return isdigit(c) || c == '.' || c == 'e' || c == 'E' || c == '+' || c == '-';
+        return isdigit(c) || c == '.' || c == 'e' || c == 'E' || c == '+' || c == '-' || c == ' ';
     }
 
     bool _evaluate(const std::string& expression, double& result) {
