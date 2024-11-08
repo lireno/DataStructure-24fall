@@ -3,6 +3,12 @@
 #include <string>
 
 int main() {
+    std::cout << "    _______    _____    __    __  _____  __________  ____" << std::endl;
+    std::cout << "   / ____/ |  / /   |  / /   / / / /   |/_  __/ __ \\/ __ \\" << std::endl;
+    std::cout << "  / __/  | | / / /| | / /   / / / / /| | / / / / / / /_/ /" << std::endl;
+    std::cout << " / /___  | |/ / ___ |/ /___/ /_/ / ___ |/ / / /_/ / _, _/" << std::endl;
+    std::cout << "/_____/  |___/_/  |_/_____/\\____/_/  |_/_/  \\____/_/ |_|" << std::endl;
+    std::cout << "==========================================================" << std::endl;
     std::string expression;
     ExpressionEvaluator evaluator;
     double result;
