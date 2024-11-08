@@ -189,7 +189,7 @@ class BinarySearchTree {
         return *this;
     }
 
-  private:
+  protected:
     /**
      * @brief 二叉树节点结构体
      */
@@ -197,6 +197,7 @@ class BinarySearchTree {
         Comparable element; ///< 节点存储的元素
         BinaryNode* left;   ///< 左子节点指针
         BinaryNode* right;  ///< 右子节点指针
+        int height;         ///< 节点高度
 
         /**
          * @brief 构造函数，接受常量引用
@@ -205,8 +206,8 @@ class BinarySearchTree {
          * @param lt 左子节点指针
          * @param rt 右子节点指针
          */
-        BinaryNode(const Comparable& theElement, BinaryNode* lt, BinaryNode* rt)
-            : element{theElement}, left{lt}, right{rt} {}
+        BinaryNode(const Comparable& theElement, BinaryNode* lt, BinaryNode* rt, int h = 0)
+            : element{theElement}, left{lt}, right{rt}, height{h} {}
 
         /**
          * @brief 构造函数，接受右值引用
@@ -215,8 +216,8 @@ class BinarySearchTree {
          * @param lt 左子节点指针
          * @param rt 右子节点指针
          */
-        BinaryNode(Comparable&& theElement, BinaryNode* lt, BinaryNode* rt)
-            : element{std::move(theElement)}, left{lt}, right{rt} {}
+        BinaryNode(Comparable&& theElement, BinaryNode* lt, BinaryNode* rt, int h = 0)
+            : element{std::move(theElement)}, left{lt}, right{rt}, height{h} {}
     };
 
     BinaryNode* root; ///< 树的根节点指针
@@ -257,6 +258,63 @@ class BinarySearchTree {
         return t;
     }
 
+    static const int ALLOWED_IMBALANCE = 1;
+
+    void Balance(BinaryNode*& t) const {
+        if (t == nullptr) {
+            return;
+        }
+        if (height(t->left) - height(t->right) > ALLOWED_IMBALANCE) {
+            if (height(t->left->left) >= height(t->left->right)) {
+                rotateWithLeftChild(t);
+            } else {
+                doubleWithLeftChild(t);
+            }
+        } else if (height(t->right) - height(t->left) > ALLOWED_IMBALANCE) {
+            if (height(t->right->right) >= height(t->right->left)) {
+                rotateWithRightChild(t);
+            } else {
+                doubleWithRightChild(t);
+            }
+        }
+        t->height = std::max(height(t->left), height(t->right)) + 1;
+    }
+
+    int height(BinaryNode* t) const {
+        return t == nullptr ? -1 : t->height;
+    }
+
+    int max(int lhs, int rhs) const {
+        return lhs > rhs ? lhs : rhs;
+    }
+
+    void rotateWithLeftChild(BinaryNode*& k2) const {
+        BinaryNode* k1 = k2->left;
+        k2->left = k1->right;
+        k1->right = k2;
+        k2->height = max(height(k2->left), height(k2->right)) + 1;
+        k1->height = max(height(k1->left), k2->height) + 1;
+        k2 = k1;
+    }
+
+    void rotateWithRightChild(BinaryNode*& k1) const {
+        BinaryNode* k2 = k1->right;
+        k1->right = k2->left;
+        k2->left = k1;
+        k1->height = max(height(k1->left), height(k1->right)) + 1;
+        k2->height = max(height(k2->right), k1->height) + 1;
+        k1 = k2;
+    }
+
+    void doubleWithLeftChild(BinaryNode*& k3) const {
+        rotateWithRightChild(k3->left);
+        rotateWithLeftChild(k3);
+    }
+
+    void doubleWithRightChild(BinaryNode*& k1) const {
+        rotateWithLeftChild(k1->right);
+        rotateWithRightChild(k1);
+    }
     /**
      * @brief 递归检查树中是否包含指定的元素
      *
@@ -333,6 +391,7 @@ class BinarySearchTree {
             /// 如果元素已存在，则不进行插入
             /// 这种情况不可遗漏，严格的规则中也可以抛出异常
         }
+        Balance(t);
     }
 
     /**
@@ -359,21 +418,18 @@ class BinarySearchTree {
      *
      * @param t 当前节点指针
      */
-    BinaryNode* detachMin(BinaryNode* t, BinaryNode*& parent1) {
-        BinaryNode* parent = parent1;
+    BinaryNode* detachMin(BinaryNode*& t) {
         if (t == nullptr) {
             return nullptr;
         }
-        while (t->left != nullptr) {
-            parent = t;
-            t = t->left;
+        if (t->left == nullptr) {
+            BinaryNode* temp = t;
+            t = t->right;
+            return temp;
         }
-        if (parent == parent1) {
-            parent1->right = t->right;
-        } else {
-            parent->left = t->right;
-        }
-        return t;
+        BinaryNode* temp = detachMin(t->left);
+        Balance(t);
+        return temp;
     };
 
     /**
@@ -382,50 +438,33 @@ class BinarySearchTree {
      * @param x 要移除的元素
      * @param t 当前节点指针
      */
-    void remove(const Comparable& x, BinaryNode* t) {
-        BinaryNode* parent = nullptr;
-
-        while (t != nullptr) {
-            if (x < t->element) {
-                parent = t;
-                t = t->left;
-            } else if (x > t->element) {
-                parent = t;
-                t = t->right;
-            } else {
-                break;
-            }
-        }
-
+    bool remove(const Comparable& x, BinaryNode*& t) {
         if (t == nullptr) {
-            return;
+            return false;
         }
-
-        if (t->left == nullptr || t->right == nullptr) {
-            if (parent == nullptr) {
-                root = t->left == nullptr ? t->right : t->left;
-            } else if (parent->left == t) {
-                parent->left = t->left == nullptr ? t->right : t->left;
-            } else {
-                parent->right = t->left == nullptr ? t->right : t->left;
-            }
+        bool is_removed = false;
+        if (x < t->element) {
+            is_removed = remove(x, t->left);
+        } else if (x > t->element) {
+            is_removed = remove(x, t->right);
+        } else if (t->left != nullptr && t->right != nullptr) {
+            BinaryNode* temp = detachMin(t->right);
+            temp->left = t->left;
+            temp->right = t->right;
             delete t;
-            t = nullptr;
-            return;
+            t = temp;
+            is_removed = true;
+        } else {
+            BinaryNode* oldNode = t;
+            t = (t->left != nullptr) ? t->left : t->right;
+            delete oldNode;
+            is_removed = true;
         }
 
-        BinaryNode* minNode = detachMin(t->right, t);
-        minNode->left = t->left;
-        minNode->right = t->right;
-        if (parent == nullptr) {
-            root = minNode;
-        } else if (parent->left == t) {
-            parent->left = minNode;
-        } else {
-            parent->right = minNode;
+        if (is_removed) {
+            Balance(t);
         }
-        delete t;
-        t = nullptr;
+        return is_removed;
     }
 
     /**
