@@ -4,7 +4,7 @@ The Expression Evaluator is a simple program that evaluates arithmetic expressio
 ### Supported Operations
 - Addition, Subtraction, Multiplication, Division
 - Parentheses, including (), {}, and []
-- Negative numbers, e.g., -5 * 5, 3+-2, etc. **(Note: No space between the minus sign `-` and the following number)**.  *--5 + 4* or *1 + +2* are not supported.   
+- Negative numbers, e.g., -5 * 5, 3+-2, -(3+5), 2++-+5, etc.
 - Scientific notation, e.g., 1.2e-3, 3.4e5, etc.
 
 ## Files
@@ -39,3 +39,9 @@ To clean up the directory from generated files:
 ```bash
 make clean
 ```
+
+## Some changes you can apply
+If you want to mark `1++2` as an invalid expression, you can modify line 148 in `ExpressionEvaluator.hpp` from `if ((c == '-' || c == '+') && !expectOperator)` to `if (c == '-' && !expectOperator)`.
+
+## remarks
+事实上，我刚开始先实现了负数的四则运算，但是并不能计算`-(2+3)`这种简单的式子，因为我只是支持负数，并没有支持取反操作。后来通过引入bool变量sign，将括号视为有正负的，例如-(2+3)中的左括号就是负的，这样就可以实现了。具体实现为如果是左括号是负的，那入栈的时候，入的不是`(`,而是`)`来标记正负。

@@ -29,8 +29,8 @@ The Expression Evaluator is implemented as a C++ class named \texttt{ExpressionE
     \item \textbf{Stacks for Values and Operators}: The evaluator uses two stacks: one for numeric values (\texttt{values}) and one for operators (\texttt{ops}). This structure allows handling of operator precedence and nested expressions.
     \item \textbf{Operator and Precedence Handling}: Operators are handled based on precedence, with \texttt{*} and \texttt{/} having higher precedence than \texttt{+} and \texttt{-}. Operators are evaluated as they appear unless the expression context requires deferring evaluation due to parentheses.
     \item \textbf{Parentheses and Bracket Matching}: The evaluator supports multiple types of brackets (\texttt{()}, \texttt{\{\}}, \texttt{[]}). It verifies balanced and matching brackets and processes inner expressions before outer ones.
+    \item \textbf{Negative}: The evaluator can handle negative numbers and expressions, such as \texttt{-2}, \texttt{----2} and \texttt{-(2+3)}.
     \item \textbf{Number Validation}: To handle numbers and scientific notation, a regular expression pattern is used to verify if a string is a valid number format. The conversion from character to number mainly relies on the C++ standard library function \texttt{std::stod}. Additionally, the \texttt{stod} function can handle very small numbers, so when dealing with division by zero, the condition does not need to be set to $< 1e-6$.
-    \item \textbf{Negative Numbers}: The evaluator supports negative numbers through a boolean variable \texttt{minus\_flag}. When encountering a \texttt{-} that does not meet the operator requirements, the next character is checked to see if it is a digit. If it is, \texttt{minus\_flag} is set to \texttt{true}, indicating that the evaluator is in a negative number state.
     \item \textbf{Error Handling}: The evaluator checks for errors such as division by zero, invalid or misplaced operators, unmatched parentheses, and malformed numbers. Expressions failing any validation criteria are flagged as \texttt{ILLEGAL}.
 \end{itemize}
 
@@ -55,7 +55,7 @@ The following test cases assess the evaluator's ability to handle various expres
 \hline
 23/e-100 & 2.3e101 & Division with small number \\
 \hline
--3 * (-2 + (4 - 6) * 2) & 18 & Negative numbers with parentheses \\
+-(2+5) & -7 & Negative sign before parentheses \\
 \hline
 (1.5e3 - 1e2) / (2.5 * 10) & 56 & Scientific notation with parentheses \\
 \hline
