@@ -120,10 +120,8 @@ void testIncreasingData() {
 int main() {
     auto start = high_resolution_clock::now();
 
-    // Test random data insertion and removal
     testRandomData();
 
-    // Test increasing data insertion and removal
     testIncreasingData();
 
     auto end = high_resolution_clock::now();
