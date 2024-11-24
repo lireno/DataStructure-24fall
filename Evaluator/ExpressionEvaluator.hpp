@@ -138,7 +138,7 @@ class ExpressionEvaluator {
                     if (!compute(ops.top())) return false;
                     ops.pop();
                 }
-                if (ops.empty() && ops.top() != oppositeBracket(c) && ops.top() != c) return false;
+                if (ops.empty() || ops.top() != oppositeBracket(c) && ops.top() != c) return false;
 
                 if (isRightBracket(ops.top())) {
                     values.top() *= -1;

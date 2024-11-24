@@ -1,5 +1,5 @@
 run:
-	g++ -g -o main main.cpp
+	g++ -o main main.cpp
 	./main
 
 report:
@@ -11,9 +11,9 @@ report:
 
 all: run
 
-test:
-	g++ -g -o test test.cpp
-	./test
+test: test.cpp
+	g++ -g -O0 -o test test.cpp
+	gdb test
 
 clean:
 	rm -f main test
