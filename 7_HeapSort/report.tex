@@ -1,0 +1,126 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\usepackage[affil-it]{authblk}
+\usepackage{hyperref}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{梁育玮, 3230102923}
+\chead{数据结构与算法第七次作业}
+\rhead{\today}
+\title{数据结构与算法第七次作业}
+
+\author{梁育玮 3230102923
+  \thanks{Electronic address: \texttt{liangyuwei631@gmail.com}}}
+\affil{(Mathematics and Applied Mathematics 2302), Zhejiang University }
+
+
+\date{\today}
+
+\maketitle
+
+\section{HeapSort设计思路}
+
+HeapSort算法的设计思路如下：
+
+\begin{enumerate}
+    \item \textbf{构建最大堆}：
+    \begin{itemize}
+        \item 从数组的中间位置开始，逐步向前遍历每个元素，并对每个元素进行堆化操作。
+        \item 堆化操作的目的是确保当前节点及其子树满足最大堆的性质，即父节点的值大于或等于其子节点的值。
+    \end{itemize}
+    \item \textbf{排序过程}：
+    \begin{itemize}
+        \item 将堆顶元素（即最大值）与数组的最后一个元素交换位置，这样最大值就被移到了数组的末尾。
+        \item 然后对剩余的元素（不包括已经排序的部分）进行堆化操作，以重新构建最大堆。
+        \item 重复上述步骤，直到所有元素都被排序。
+    \end{itemize}
+\end{enumerate}
+下面是伪代码
+
+\begin{lstlisting}
+    Heapify(A, n, i)
+        l = 2 * i + 1
+        r = 2 * i + 2
+        largest = i
+        if l <= A.heapSize and A[l] > A[largest]
+            largest = l
+        if r <= A.heapSize and A[r] > A[largest]
+            largest = r
+        if largest != i
+            swap A[i] and A[largest]
+            Heapify(A, largest)
+
+    BuildHeap(A)
+    A.heapSize = A.length
+    for i = A.length / 2 downto 0
+        Heapify(A, 0)
+
+    HeapSort(A)
+        BuildHeap(A)
+        for i = A.length downto 1
+            swap A[1] and A[i]
+            Heapify(A, i, 0)
+\end{lstlisting}
+
+\section{测试结果}
+\subsection{结果展示}
+下面是HeapSort算法的测试结果（1000000个数据）：
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Sequence Type & HeapSort Time (seconds) & std::sort\_heap Time (seconds) \\
+        \hline
+        Random Sequence & 0.36588 & 0.540019 \\
+        \hline
+        Ordered Sequence & 0.338483 & 0.494029 \\
+        \hline
+        Reverse Sequence & 0.359191 & 0.471962 \\
+        \hline
+        Repeated Sequence & 0.45551 & 0.596638 \\
+        \hline
+    \end{tabular}
+    \caption{Performance comparison between HeapSort and std::sort\_heap}
+    \label{tab:performance}
+\end{table}
+\section{数据分析}
+
+从表\ref{tab:performance}中可以看出，HeapSort在所有测试的序列类型上都表现出了比std::sort\_heap更好的性能。这表明HeapSort在处理不同类型的序列时具有较高的效率。
+
+\subsection{原因分析}
+std::sort\_heap在程序运行前会对序列进行一系列检查，会抛出异常，而HeapSort没有这一步。下面是std::sort\_heap函数开始时的一些检查，例如确保可以比较，比较无自反性，是一个有效的堆等等。
+\begin{lstlisting}
+__glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept<_RandomAccessIterator>)
+__glibcxx_function_requires(_LessThanComparableConcept<typename iterator_traits<_RandomAccessIterator>
+                                                                                        ::value_type>)
+__glibcxx_requires_valid_range(__first, __last);
+__glibcxx_requires_irreflexive(__first, __last);
+__glibcxx_requires_heap(__first, __last);
+\end{lstlisting}
+
+同时，std::sort\_heap调用了多个内部函数（如 std::\_\_pop\_heap 和 std::\_\_adjust\_heap），每个函数都进行了多层封装和抽象。这些抽象在编译时会增加复杂性，并可能降低运行时性能。
+\end{document}
