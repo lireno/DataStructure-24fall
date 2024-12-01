@@ -1,10 +1,10 @@
 run:
-	g++ -o2 -std=c++11 -o test test.cpp
+	g++ -O2 -std=c++17 -o test test.cpp
 	./test
 
 report:
 	xelatex report.tex
-	# xelatex report.tex
+	xelatex report.tex
 	# bibtex report
 	# xelatex report.tex
 	# xelatex report.tex

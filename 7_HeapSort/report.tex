@@ -88,35 +88,34 @@ HeapSort算法的设计思路如下：
 
 \section{测试结果}
 \subsection{结果展示}
-下面是HeapSort算法的测试结果（1000000个数据）：
+下面是HeapSort算法的测试结果（1000000个数据），实验环境为 -std=c++17 O2：
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
         Sequence Type & HeapSort Time (seconds) & std::sort\_heap Time (seconds) \\
         \hline
-        Random Sequence & 0.36588 & 0.540019 \\
+        Random Sequence & 0.0891352 & 0.0967212 \\
         \hline
-        Ordered Sequence & 0.338483 & 0.494029 \\
+        Ordered Sequence & 0.0398378 & 0.0588818 \\
         \hline
-        Reverse Sequence & 0.359191 & 0.471962 \\
+        Reverse Sequence & 0.0419689 & 0.0743362 \\
         \hline
-        Repeated Sequence & 0.45551 & 0.596638 \\
+        Repeated Sequence & 0.0746369 & 0.224179 \\
         \hline
     \end{tabular}
     \caption{Performance comparison between HeapSort and std::sort\_heap}
     \label{tab:performance}
 \end{table}
-\section{数据分析}
 
 从表\ref{tab:performance}中可以看出，HeapSort在所有测试的序列类型上都表现出了比std::sort\_heap更好的性能。这表明HeapSort在处理不同类型的序列时具有较高的效率。
 
 \subsection{原因分析}
-std::sort\_heap在程序运行前会对序列进行一系列检查，会抛出异常，而HeapSort没有这一步。下面是std::sort\_heap函数开始时的一些检查，例如确保可以比较，比较无自反性，是一个有效的堆等等。
+std::sort\_heap在程序运行前会对序列进行一系列检查，会抛出异常，而HeapSort没有这一步。
+
+下面是std::sort\_heap函数开始时的一些检查，例如确保可以比较，比较无自反性，是一个有效的堆等等。
 \begin{lstlisting}
 __glibcxx_function_requires(_Mutable_RandomAccessIteratorConcept<_RandomAccessIterator>)
-__glibcxx_function_requires(_LessThanComparableConcept<typename iterator_traits<_RandomAccessIterator>
-                                                                                        ::value_type>)
 __glibcxx_requires_valid_range(__first, __last);
 __glibcxx_requires_irreflexive(__first, __last);
 __glibcxx_requires_heap(__first, __last);
