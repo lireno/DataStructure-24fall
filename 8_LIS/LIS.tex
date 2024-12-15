@@ -1,0 +1,81 @@
+\documentclass[a4paper]{article}
+\usepackage[affil-it]{authblk}
+
+\usepackage{listings}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+
+\title{LIS(单调递增数列)实现}
+
+\author{梁育玮 3230102923}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+\subsection*{I. 大致思路}
+维护一个大小不超过$n$的一维数组$s$和他的大小size\_以及一个数组b，$s[i]$表示长度为$i$的递增数列里面，末值的最小可能，保证$s$是升序的。$b[i]$表示第$i$个元素结尾的递增序列最大长度。
+
+每读入一个数$a[i]$，记$j$是满足$s[j]<a[i]$的最大下标，将$s[j+1]$设为$t$，$b[i]$设为j+1，同时视情况更新size的值，最终数组s的长度即为LIS序列的最大长度
+
+最后通过数组b倒着找满足要求的序列
+
+\subsection*{伪代码}
+下面是伪代码
+\begin{lstlisting}
+a is a given array
+n = a.size
+b = an array of size n
+s = an array of size n+1
+size_ = 1
+s[1] = a[0]
+b[0] = 1
+for i = 1 to n-1
+    //bijection search
+    pos = 0
+    l, r = 1, size
+    while l <= r
+        mid = (l + r)/2
+        if a[i] > s[mid]
+            pos = mid
+            l = mid + 1
+        else r = mid - 1
+    s[pos + 1] = a[i]
+    b[i] = pos + 1
+m, j = size_, n-1
+LST = an array of size size_
+//print the LIS
+while m > 0
+    while b[j] != m
+        j = j -1
+    LST[m-1] = a[j]
+    m = m - 1
+\end{lstlisting}
+同文件夹下的'1.py'中有根据伪代码自动生成的python代码，python代码中有对接下来展示的数据的详细处理
+
+\subsection*{II. 例子}
+给定一列数据：a = [2, 1, 4, 3, 2, 5, 6, 3, 2] 
+\begin{itemize}
+    \item 处理2：将s[1]设为2，size设为1，b[0] = 1
+    \item 处理1：没有比1小的，将s[1]设为1，b[1] = 1
+    \item 处理4：1比4小，将s[2]设为4，同时更新size\_为2，b[2] = 2
+    \item 处理3：1比3小，将s[2]设为3，b[3] = 2
+    \item 处理2：1比2小，将s[2]设为2，b[4] = 2
+    \item 处理5：2比5小，将s[3]设为5，同时更新size\_为3，b[5] = 3
+    \item 处理6：5比6小，将s[4]设为5，同时更新size\_为4，b[6] = 4
+    \item 处理3：2比3小，将s[3]设为3，b[7] = 3
+    \item 处理2：1比2小，将s[2]设为2（实际上没有变化），b[8] = 2
+    \item size = 4为数组长度，b=[1, 1, 2, 2, 2, 3, 4, 3, 2]
+    \item 最后找到要求的LIS
+\end{itemize}
+
+
+\subsection*{时间复杂度分析}
+二分查找的时间复杂度为\(\Theta\)(log size\_)，故构建数组s和b的时间复杂度是\(\mathcal{O}(n \log n )\)，
+构建LST的时间复杂度为\(\mathcal{O}(n)\)，故整体时间复杂度为\(\mathcal{O}(n \log n)\)
+
+
+\end{document}
