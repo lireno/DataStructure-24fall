@@ -23,7 +23,7 @@
 
 最后通过数组b倒着找满足要求的序列
 
-\subsection*{伪代码}
+\subsection*{II. 伪代码}
 下面是伪代码
 \begin{lstlisting}
 a is a given array
@@ -56,7 +56,7 @@ while m > 0
 \end{lstlisting}
 同文件夹下的'1.py'中有根据伪代码自动生成的python代码，python代码中有对接下来展示的数据的详细处理
 
-\subsection*{II. 例子}
+\subsection*{III. 例子}
 给定一列数据：a = [2, 1, 4, 3, 2, 5, 6, 3, 2] 
 \begin{itemize}
     \item 处理2：将s[1]设为2，size设为1，b[0] = 1
@@ -73,7 +73,7 @@ while m > 0
 \end{itemize}
 
 
-\subsection*{时间复杂度分析}
+\subsection*{IV. 时间复杂度分析}
 二分查找的时间复杂度为\(\Theta\)(log size\_)，故构建数组s和b的时间复杂度是\(\mathcal{O}(n \log n )\)，
 构建LST的时间复杂度为\(\mathcal{O}(n)\)，故整体时间复杂度为\(\mathcal{O}(n \log n)\)
 
