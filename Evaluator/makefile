@@ -12,8 +12,8 @@ report:
 all: run
 
 test: test.cpp
-	g++ -g -O0 -o test test.cpp
-	gdb test
+	g++ -O2 -o test test.cpp
+	./test
 
 clean:
 	rm -f main test
