@@ -3,7 +3,7 @@
 
 class Chicken {
   private:
-    int age = 24;
+    int age = 24; // 默认年龄为 24
     char* name = nullptr;
 
   public:
